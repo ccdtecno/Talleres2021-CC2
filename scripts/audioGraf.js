@@ -3,6 +3,8 @@ let sliderFreq;
 let sliderVol;
 let isLog;
 let textColor;
+var bNormalize = true;
+var centerClip = false;
 
 function setup()
 {
@@ -10,9 +12,14 @@ function setup()
   fill(255);
   colorMode(HSB);
   sliderFreq = createSlider(0,800,0,0.1);
-  sliderFreq.style('width: 800px');
+  sliderFreq.style('width: 794px');
+  sliderFreq.position(0,0);
+
   sliderVol = createSlider(0,1,0,0.01);
-  sliderVol.style('transform: rotate(-90deg);');
+  sliderVol.style('width: 392px');
+  sliderVol.style('transform: rotate(270deg)');
+  sliderVol.position(width-205,  height*3 /9 );
+  
   osc1 = new p5.Oscillator();
   osc1.setType('sine');
   isLog = true;
@@ -37,6 +44,7 @@ function draw()
   osc1.amp(vol);
 
   // Texto de informacion
+  noStroke();
   fill(textColor);
   text('Oscilador: ' + osc1.getType(),width/5,50);
   text(freq + '  Hz',width*2/5, 50);
@@ -69,14 +77,25 @@ function draw()
   }
   
   // Forma de onda en el tiempo
-  let waveform = fft.waveform();
+  let waveform = fft.waveform(1024, 'float32');
   noFill();
   beginShape();
   stroke(100,255,255);
   for (let i = 0; i < waveform.length; i++){
     let x = map(i, 0, waveform.length, 0, width);
-    let y = map( waveform[i], -1, 1, 50, 50+height*3/5);
+    let y = map( waveform[i], -1, 1, height/3, height*2/3);
     vertex(x,y);
+  }
+  endShape();
+
+
+  let corrBuff = autoCorrelate(waveform);
+  beginShape();
+  stroke(180,255,255);
+  for (let i = 0; i < corrBuff.length; i++) {
+    let w = map(i, 0, corrBuff.length, 0, width);
+    let h = map(corrBuff[i], -1, 1, height/3, 0);
+    curveVertex(w, h);
   }
   endShape();
 
@@ -92,10 +111,15 @@ function keyPressed() {
     osc1.setType('square');
   if(key == '4')
   osc1.setType('sawtooth');
-  if(key == 'p')
-  osc1.start();
-  if(key == 's')
-  osc1.stop();
+  if(key == 'p') {
+    osc1.start();
+    osc1.amp(sliderVol.value(),2);
+  }
+  if(key == 's') {
+    osc1.amp(0,2);
+    osc1.stop();
+  }
+
   if(key == 'l')
     isLog =! isLog;
     print(isLog);
