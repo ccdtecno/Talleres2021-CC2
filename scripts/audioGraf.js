@@ -89,15 +89,15 @@ function draw()
   endShape();
 
 
-  let corrBuff = autoCorrelate(waveform);
-  beginShape();
-  stroke(180,255,255);
-  for (let i = 0; i < corrBuff.length; i++) {
-    let w = map(i, 0, corrBuff.length, 0, width);
-    let h = map(corrBuff[i], -1, 1, height/3, 0);
-    curveVertex(w, h);
-  }
-  endShape();
+  // let corrBuff = autoCorrelate(waveform);
+  // beginShape();
+  // stroke(180,255,255);
+  // for (let i = 0; i < corrBuff.length; i++) {
+  //   let w = map(i, 0, corrBuff.length, 0, width);
+  //   let h = map(corrBuff[i], -1, 1, height/3, 0);
+  //   curveVertex(w, h);
+  // }
+  // endShape();
 
   
 }
