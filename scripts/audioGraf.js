@@ -11,7 +11,7 @@ function setup()
   createCanvas(800, 600);
   fill(255);
   colorMode(HSB);
-  sliderFreq = createSlider(0,800,0,0.1);
+  sliderFreq = createSlider(0,800,0,0.01);
   sliderFreq.style('width: 794px');
   sliderFreq.position(0,0);
 
@@ -38,6 +38,7 @@ function draw()
   background(0);
   
   // Sliders
+  // print(sliderFreq.value());
   let freq = logslider(sliderFreq.value(), 0,800,20,20000);
   let vol = sliderVol.value();
   osc1.freq(freq);
@@ -89,15 +90,15 @@ function draw()
   endShape();
 
 
-  // let corrBuff = autoCorrelate(waveform);
-  // beginShape();
-  // stroke(180,255,255);
-  // for (let i = 0; i < corrBuff.length; i++) {
-  //   let w = map(i, 0, corrBuff.length, 0, width);
-  //   let h = map(corrBuff[i], -1, 1, height/3, 0);
-  //   curveVertex(w, h);
-  // }
-  // endShape();
+  let corrBuff = autoCorrelate(waveform);
+  beginShape();
+  stroke(180,255,255);
+  for (let i = 0; i < corrBuff.length; i++) {
+    let w = map(i, 0, corrBuff.length, 0, width);
+    let h = map(corrBuff[i], -1, 1, height*4/9, height*2/9);
+    curveVertex(w, h);
+  }
+  endShape();
 
   
 }
@@ -111,18 +112,39 @@ function keyPressed() {
     osc1.setType('square');
   if(key == '4')
   osc1.setType('sawtooth');
-  if(key == 'p') {
+  if(key == 'i') {
     osc1.start();
-    osc1.amp(sliderVol.value(),2);
   }
-  if(key == 's') {
-    osc1.amp(0,2);
+  if(key == 'o') {
     osc1.stop();
   }
-
-  if(key == 'l')
+  if(key == 'l') {
     isLog =! isLog;
-    print(isLog);
+  }
+  if(key == 'z') {
+    sliderFreq.value(297.775);
+  }
+  if(key == 'x') {
+    sliderFreq.value(311.16);
+  }
+  if(key == 'c') {
+    sliderFreq.value(324.53);
+  }
+  if(key == 'v') {
+    sliderFreq.value(331.22);
+  }
+  if(key == 'b') {
+    sliderFreq.value(344.62);
+  }
+  if(key == 'n') {
+    sliderFreq.value(358);
+  }
+  if(key == 'm') {
+    sliderFreq.value(371.35);
+  }
+  if(key == ',') {
+    sliderFreq.value(378.05);
+  }
 }
 
 function logslider(position, min ,max, minLog, maxLog) {

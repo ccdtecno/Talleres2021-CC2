@@ -25,13 +25,14 @@ function setup() {
 }
 
 function draw() {
+    background(0);
     grafica.setArmonicos(sliderArm.value());
     grafica.setAmp(sliderAmp.value());
     grafica.setTimeStep(sliderTime.value());
-    print(sliderTime.value());
+    // print(sliderTime.value());
 
     grafica.actualizar();
-    print(grafica.getArmonicos());
+    // print(grafica.getArmonicos());
 }
 
 

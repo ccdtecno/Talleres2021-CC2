@@ -1,11 +1,12 @@
 class PloterFourier {
     constructor(centroPolarPlot, initTimePlot, amplitude, armonicos) {
         this.tiempo = 0;
-        this.timeStep = 0.1;
+        this.timeStep = 0.02;
         // this.velTime = -0.05;
         this.amp = amplitude;
-        this.piFactor = (3 / (1 * PI));
-        this.radio = this.amp + this.piFactor;
+        // this.piFactor = (3 / (1 * PI));
+        // this.radio = this.amp + this.piFactor;
+        this.radio = this.amp;
         this.resolucion = armonicos;
 
         this.arrayWaveTime = [];
@@ -17,17 +18,19 @@ class PloterFourier {
 
         this.sizeTiempoPlot = 500;
         this.sizePolarPlot = 1000;
-
+        this.factor = 0;
         this.funcActual = 1;
     }
 
     actualizar() {
-        background(0);
+        // background(0);   
         this.dibujaAxis();
         this.puntoExterior = this.centroPolar.copy();
+        let amplitud = this.amp;
         for(let i = 0; i < this.resolucion; i ++) {
             this.centroActual = this.puntoExterior.copy();
             let n;
+            
             switch(this.funcActual) {
                 case 1:
                     // TRIANGULAR
@@ -52,7 +55,30 @@ class PloterFourier {
                     this.puntoExterior.x += (this.radio * cos(n * this.tiempo));
                     this.puntoExterior.y += (this.radio * sin(n * this.tiempo));
                     break;
-
+                case 4:
+                        // SINE
+                        this.radio =  this.amp;
+                        // Calcula el punto exterior;
+                        this.puntoExterior.x += (this.radio * cos(this.tiempo));
+                        this.puntoExterior.y += (this.radio * sin(this.tiempo));
+                        break;
+                case 5:
+                        // SINE
+                        n = i + 1; 
+                        this.radio =  amplitud;
+                        // if(i === 0)
+                        
+                        // else 
+                        //     this.radio =  
+                        // this.amp *= (this.factor / n); 
+                        // print(this.radio);
+                        
+                        // Calcula el punto exterior;
+                        this.puntoExterior.x += (this.radio * cos(this.tiempo*n));
+                        this.puntoExterior.y += (this.radio * sin(this.tiempo*n));
+                        amplitud *= this.factor;
+                        break;
+                        
             }
             this.dibujaPolarStructure();
         }
@@ -61,7 +87,7 @@ class PloterFourier {
         this.dibujaBridgeStroke();
         this.dibujaTimeShape();
         this.dibujaPolarShape();
-
+        // print('');
         // Actualiza el tiempo en el canvas
         // tiempo += velTime;
         this.tiempo += this.timeStep;
@@ -105,7 +131,6 @@ class PloterFourier {
 
     dibujaPolarStructure() {
         // Dibuja estructura del espirografo
-
         push();
         // Dibuja circulo
         strokeWeight(1);
@@ -181,7 +206,46 @@ class PloterFourier {
         this.timeStep = time;
     }
 
-    changeFunction(funcion) {
-        this.funcActual = funcion;
+    changeFunction(numOfFunc) {
+        this.funcActual = numOfFunc;
     }
+
+    changeFactor(f) {
+        this.factor = f;
+    }
+}
+
+
+class PloterFinalFourier extends PloterFourier {
+    
+    constructor(centroPolarPlot, initTimePlot, amplitude, armonicos) {
+        super(centroPolarPlot, initTimePlot, amplitude, armonicos);
+        // this.changeFunction(5);
+        this.timeStep = 0.02;
+    }
+    
+    actualizar() {
+        this.dibujaAxis();
+        this.puntoExterior = this.centroPolar.copy();
+        this.centroActual = this.puntoExterior.copy();
+        this.radio =  this.amp;
+        // print(this.resolucion);
+        this.puntoExterior.x += (this.radio * cos(this.resolucion * this.tiempo));
+        this.puntoExterior.y += (this.radio * sin(this.resolucion * this.tiempo));
+        
+        this.dibujaPolarStructure();
+        
+        this.guardaPolar();
+        this.guardaTiempo();
+        this.dibujaBridgeStroke();
+        this.dibujaTimeShape();
+        this.dibujaPolarShape();
+        // }
+        // Actualiza el tiempo en el canvas
+        // tiempo += velTime;
+        this.tiempo += this.timeStep;
+        // print(this.radio);
+        // print('');
+    }
+    
 }
