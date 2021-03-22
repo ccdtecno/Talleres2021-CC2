@@ -5,13 +5,13 @@
 */
 
 let graficas = [];
-let numGraficas = 3;
-let factor = 0.75
-let amplitude = 60;
+let numGraficas = 20;
+let factor = 0.6
+let amplitude = 15;
 
 function setup() {
-    createCanvas(800,800);
-    // cnv.parent('sketch');
+    let cnv = createCanvas(800,800);
+    cnv.parent('sketch');
     graficas = [numGraficas];
     let polarInit = createVector(amplitude*2,amplitude*2);
     let timeInit =  createVector(amplitude*6,amplitude*2)

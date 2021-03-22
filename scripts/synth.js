@@ -6,7 +6,8 @@ let modLFO;
 let lfoState = false;
 
 function setup() {
-  createCanvas(600, 600);  
+  let cnv = createCanvas(600, 600);  
+  cnv.parent('sketch');
   colorMode(HSB);
   textColor = color(160,255,80);
   

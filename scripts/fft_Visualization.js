@@ -1,30 +1,31 @@
 var button;
 var jumButton;
 
-var audioFile, fft;
+var song, fft, mic;
 var bNormalize = true;
 var centerClip = false;
 
 var audioIsPlaying = false;
 
 function preload(){
-  song = loadSound('../songs/bicep.mp3');
+  song = loadSound('../songs/synth.mp3');
 }
 
 
 function setup() {
-  createCanvas(500, 500);
+  let cnv = createCanvas(700, 700);
+  cnv.parent('sketch')
   angleMode(DEGREES);
   colorMode(HSB);
   rectMode(CENTER); 
-  button = createButton('Play / Stop');
+  button = createButton('toggle');
   button.mousePressed(toggleSong);
   
-  jumpButton = createButton("Random");
+  jumpButton = createButton("jump");
   jumpButton.mousePressed(jumpSong);
-
+  mic = new p5.AudioIn();
   song.play();
-  
+  audioIsPlaying = true;
   fft = new p5.FFT(0.6,64);
   
   color_back = color(191, 98, 15);
@@ -42,14 +43,14 @@ function setup() {
 
 function draw() {
   
-  background(191, 98, 15, 0.07);
-  // array of values from -1 to 1
+  background(191, 98, 15, 0.2);
+
+  // Correlation, dibuja las curva amarillas de la parte superior
   var timeDomain = fft.waveform(1024, 'float32');
   var corrBuff = autoCorrelate(timeDomain);
   
   stroke(color_4);
   noFill();
-  // fill(color_2);
   beginShape();
   for (var i = 0; i < corrBuff.length; i++) {
     var w = map(i, 0, corrBuff.length, 0, width);
@@ -64,30 +65,25 @@ function draw() {
     var h = map(corrBuff[i], -1, 1, 150, 0);
     curveVertex(w, h);
   }
-  endShape();
-  
+  endShape();  
   noFill();
   translate(width/2, height*3/4);
   
+
   var spectrum = fft.analyze();
-  
   beginShape();
-  
-  for(var i = spectrum.length / 4; i < spectrum.length - 9; i++) { 
-        
-    var r = map(spectrum[i], 0, 255, 10, height/2);
+  for(var i = spectrum.length / 4; i < spectrum.length - 9; i++) {
+    var r = map(spectrum[i], 0, 255, 10, width*3/4);
     var angle = map(i, spectrum.length / 4, spectrum.length - 9, 150, 390);
     var x = r * cos(angle);
     var y = r * sin(angle);
-
     nZstroke = noise(nZstroke);
-    
     strokeWeight(3 * nZstroke);
     stroke(color_1);
     fill(color_2);
     if(i >= spectrum.length/2 && i <= spectrum.length/2 + spectrum.length/16 + spectrum.length/32) {
       // noStroke();
-      strokeWeight(2);
+      strokeWeight(5 * nZstroke);
       stroke(45, 91, 95, 0.5);
       point(-x,-y/3);  
       // rect(-x,-y/2.5,r/10);  
@@ -100,26 +96,9 @@ function draw() {
   fill(color_back);
   strokeWeight(2*random());
   stroke(color_3);
-  ellipse(0,0,map(spectrum[1],0,255,10,100));
+  ellipse(0,0,map(spectrum[1],0,255,10,width/5));
   endShape();
 }
-
-
-function toggleSong(){
-  if(song.isPlaying()){
-    song.pause();
-  } else {
-    song.play();
-  }
-}
-
-function jumpSong(){
-   var len = song.duration();
-   var t = random(len);
-   song.jump(t);
- }
-
-
 
 function autoCorrelate(buffer) {
   var newBuffer = [];
@@ -176,14 +155,28 @@ function keyPressed() {
 
 function toggleInput() {
   if (audioIsPlaying ) {
-    audioFile.pause();
+    song.pause();
     mic.start();
     fft.setInput(mic);
     audioIsPlaying = false;
   } else {
-    audioFile.play();
+    song.play();
     mic.stop();
-    fft.setInput(audioFile);
+    fft.setInput(song);
     audioIsPlaying = true;
   }
 }
+
+function toggleSong(){
+  if(song.isPlaying()){
+    song.pause();
+  } else {
+    song.play();
+  }
+}
+
+function jumpSong(){
+   var len = song.duration();
+   var t = random(len);
+   song.jump(t);
+ }

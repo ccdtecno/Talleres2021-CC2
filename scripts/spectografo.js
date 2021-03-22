@@ -5,7 +5,7 @@ let sliderArm, sliderAmp, sliderTime;
 
 function setup() {
     let cnv =createCanvas(800,500);
-    // cnv.parent('sketch');
+    cnv.parent('sketch');
     let centroCirculo = createVector(width * 0.2, height * 0.5);
     let inicioGrafica = createVector(width * 0.5, height * 0.5);
     grafica = new PloterFourier(centroCirculo, inicioGrafica, amplitude, armonicos);

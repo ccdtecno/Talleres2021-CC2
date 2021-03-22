@@ -8,7 +8,8 @@ var centerClip = false;
 
 function setup()
 {
-  createCanvas(800, 600);
+  let cnv = createCanvas(800, 600);
+  cnv.parent('sketch');
   fill(255);
   colorMode(HSB);
   sliderFreq = createSlider(0,800,0,0.01);
