@@ -35,7 +35,7 @@ class PloterFourier {
                 case 1:
                     // TRIANGULAR
                     n = i * 2 + 1; // numeros impares   
-                    this.radio = this.amp * (8 / (n*n*PI*PI) * pow((-1),((n-1)/2)));
+                    this.radio = this.amp * (6.5 / (n*n*PI*PI) * pow((-1),((n-1)/2)));
                     this.puntoExterior.x += (this.radio * cos(n * this.tiempo));
                     this.puntoExterior.y += (this.radio * sin(n * this.tiempo));
                     break;
@@ -43,14 +43,14 @@ class PloterFourier {
                 case 2:
                     //SQUARE;
                     n = i * 2 + 1; // numeros impares   
-                    this.radio = this.amp * (4 / (n * PI));
+                    this.radio = this.amp * (2.5 / (n * PI));
                     this.puntoExterior.x += (this.radio * cos(n * this.tiempo));
                     this.puntoExterior.y += (this.radio * sin(n * this.tiempo));
                     break;
                 case 3:
                     // SAWTOOTH
                     n = i + 1;
-                    this.radio = 4 * this.amp * ((1 / 2) - (1 /PI)) * (1/n);
+                    this.radio = 2.5 * this.amp * ((1 / 2) - (1 /PI)) * (1/n);
                     // Calcula el punto exterior;
                     this.puntoExterior.x += (this.radio * cos(n * this.tiempo));
                     this.puntoExterior.y += (this.radio * sin(n * this.tiempo));

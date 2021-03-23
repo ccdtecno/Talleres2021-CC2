@@ -4,7 +4,7 @@ let grafica;
 let sliderArm, sliderAmp, sliderTime;
 
 function setup() {
-    let cnv =createCanvas(800,500);
+    let cnv =createCanvas(700,400);
     cnv.parent('sketch');
     let centroCirculo = createVector(width * 0.2, height * 0.5);
     let inicioGrafica = createVector(width * 0.5, height * 0.5);
@@ -14,7 +14,7 @@ function setup() {
     sliderArm.style('transform: rotate(270deg)');
     // sliderVol.style('width: 392px');
     // sliderVol.style('transform: rotate(270deg)');
-    // sliderVol.position(width-205,  height*3 /9 );
+    // sliderArm.position(0,  height-sliderArm.width);
 
     sliderAmp = createSlider(0,100,0,1);
     sliderAmp.style('transform: rotate(270deg)');

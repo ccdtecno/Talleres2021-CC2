@@ -5,18 +5,26 @@
 */
 
 let graficas = [];
-let numGraficas = 20;
-let factor = 0.6
-let amplitude = 15;
+let numGraficas = 8;
+let factor = 0.8
+let amplitude = 30;
+
+let sliderGraficas, sliderFactor, sliderAmplitude;
 
 function setup() {
-    let cnv = createCanvas(800,800);
+    let cnv = createCanvas(700,800);
     cnv.parent('sketch');
+
+    // sliderGraficas = createSlider(1,15,1,1);
+    // sliderFactor = createSlider(0,0.9,0,0.001);
+    // sliderAmplitude = createSlider(10,80,10,0.5);
+
     graficas = [numGraficas];
     let polarInit = createVector(amplitude*2,amplitude*2);
     let timeInit =  createVector(amplitude*6,amplitude*2)
     
     let centroPolar, initGrafica, y, yT;
+
     let amplitudeGraf = amplitude;
     
     for(let i = 0; i < numGraficas; i++) {
@@ -44,7 +52,11 @@ function setup() {
 function draw() {
     background(0);
     for(let i = 0; i < graficas.length; i++) {
-        graficas[i].actualizar();       
+        // graficas[i].setArmonicos(sliderGraficas.value()); 
+        // graficas[i].changeFactor(sliderFactor.value()); 
+        // graficas[i].setAmp(sliderAmplitude.value()); 
+        graficas[i].actualizar();      
+        
     }
 }
 

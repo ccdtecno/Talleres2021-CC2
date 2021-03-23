@@ -117,13 +117,39 @@ function keyPressed() {
     adsr.play(filter.getFilter());
     // print('Press T');
   }
-  if(key == 'y') {  
-    // ad.play(filter.getFilter());
+  if(key == 'z') {  
+    filter.changeFilter('lowpass');
+    print('LowPassFilter');
   }
 
-  if(key == 'f') {  
-    
+  if(key == 'x') {  
+    filter.changeFilter('highpass');
+    print('HighPassFilter');
   }
+  if(key == 'c') {  
+    filter.changeFilter('bandpass');
+    print('BandPassFilter');
+  }
+
+  // if(key == 'v') {  
+  //   filter.changeFilter('lowshelf');
+  // }
+  // if(key == 'b') {  
+  //   filter.changeFilter('highshelf');
+  // }
+
+  // if(key == 'n') {  
+  //   filter.changeFilter('peaking');
+  // }
+  // if(key == 'm') {  
+  //   filter.changeFilter('notch');
+
+  // }
+  if(key == ',') {  
+    filter.filterToggle();
+    print('Toogle Filtro');
+  }
+
 }
 function mouseClicked() {
   

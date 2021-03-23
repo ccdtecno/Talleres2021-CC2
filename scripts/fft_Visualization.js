@@ -1,11 +1,11 @@
-let button;
-let jumButton;
+let button, jumButton, stopButton;
+let sliderVol, sliderRate;
 
 let song, fft, mic;
 let bNormalize = true;
 let centerClip = false;
 
-let audioIsPlaying = false;
+let audioInput = false;
 
 function preload(){
   song = loadSound('songs/synth.mp3');
@@ -13,19 +13,25 @@ function preload(){
 
 
 function setup() {
-  let cnv = createCanvas(700, 700);
+  let cnv = createCanvas(600, 600);
   cnv.parent('sketch')
   angleMode(DEGREES);
   colorMode(HSB);
   rectMode(CENTER); 
-  button = createButton('toggle');
-  button.mousePressed(toggleSong);
-  
-  jumpButton = createButton("jump");
+
+  // Creacion de botones 
+  button = createButton('Play / Pause');
+  button.mousePressed(onOff);
+  stopButton = createButton('Stop');
+  stopButton.mousePressed(alto);
+  jumpButton = createButton("Random");
   jumpButton.mousePressed(jumpSong);
+
+  // Creacion de sliders
+  sliderVol = createSlider(0,1,0.5,0.001)
+  sliderRate = createSlider(0,2,1,0.001)
+  
   mic = new p5.AudioIn();
-  song.play();
-  audioIsPlaying = true;
   fft = new p5.FFT(0.6,64);
   
   color_back = color(191, 98, 15);
@@ -39,16 +45,24 @@ function setup() {
   // background(0);
   background(color_back);
   
+  // Reproduccion del archivo al entrar
+  song.play();
+  audionInput = true;
+  
 }
 
 function draw() {
   
   background(191, 98, 15, 0.2);
+  // Actualizacion de los sliders
+  song.setVolume(sliderVol.value());
+  song.rate(sliderRate.value());  
 
   // Correlation, dibuja las curva amarillas de la parte superior
   let timeDomain = fft.waveform(1024, 'float32');
   let corrBuff = autoCorrelate(timeDomain);
   
+
   stroke(color_4);
   noFill();
   beginShape();
@@ -106,7 +120,6 @@ function autoCorrelate(buffer) {
 
   let autocorrelation = [];
 
-  // center clip removes any samples under 0.1
   if (centerClip) {
     let cutoff = 0.1;
     for (let i = 0; i < buffer.length; i++) {
@@ -127,7 +140,6 @@ function autoCorrelate(buffer) {
       }
     }
 
-    // average to a value between -1 and 1
     newBuffer[lag] = sum/nSamples;
   }
 
@@ -154,25 +166,30 @@ function keyPressed() {
 }
 
 function toggleInput() {
-  if (audioIsPlaying ) {
-    song.pause();
+  if(audioInput)  {
     mic.start();
     fft.setInput(mic);
-    audioIsPlaying = false;
+    audioInput = false;
+    print('Mic Input');
+    // audioIsPlaying = false;
   } else {
-    song.play();
     mic.stop();
     fft.setInput(song);
-    audioIsPlaying = true;
+    audioInput = true;
+    print('Song Input');
   }
 }
 
-function toggleSong(){
+function onOff(){
   if(song.isPlaying()){
     song.pause();
   } else {
     song.play();
   }
+}
+
+function alto(){
+  song.stop();
 }
 
 function jumpSong() {
