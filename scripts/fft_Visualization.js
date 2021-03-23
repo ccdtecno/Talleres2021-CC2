@@ -8,7 +8,7 @@ let centerClip = false;
 let audioIsPlaying = false;
 
 function preload(){
-  song = loadSound('../songs/synth.mp3');
+  song = loadSound('songs/synth.mp3');
 }
 
 
