@@ -1,11 +1,11 @@
-var button;
-var jumButton;
+let button;
+let jumButton;
 
-var song, fft, mic;
-var bNormalize = true;
-var centerClip = false;
+let song, fft, mic;
+let bNormalize = true;
+let centerClip = false;
 
-var audioIsPlaying = false;
+let audioIsPlaying = false;
 
 function preload(){
   song = loadSound('../songs/synth.mp3');
@@ -46,23 +46,23 @@ function draw() {
   background(191, 98, 15, 0.2);
 
   // Correlation, dibuja las curva amarillas de la parte superior
-  var timeDomain = fft.waveform(1024, 'float32');
-  var corrBuff = autoCorrelate(timeDomain);
+  let timeDomain = fft.waveform(1024, 'float32');
+  let corrBuff = autoCorrelate(timeDomain);
   
   stroke(color_4);
   noFill();
   beginShape();
-  for (var i = 0; i < corrBuff.length; i++) {
-    var w = map(i, 0, corrBuff.length, 0, width);
-    var h = map(corrBuff[i], -1, 1, 150, 0);
+  for (let i = 0; i < corrBuff.length; i++) {
+    let w = map(i, 0, corrBuff.length, 0, width);
+    let h = map(corrBuff[i], -1, 1, 150, 0);
     curveVertex(w, h);
   }
   endShape();
   
   beginShape();
-  for (var i = 0; i < corrBuff.length; i++) {
-    var w = map(i, 0, corrBuff.length, width, 0);
-    var h = map(corrBuff[i], -1, 1, 150, 0);
+  for (let i = 0; i < corrBuff.length; i++) {
+    let w = map(i, 0, corrBuff.length, width, 0);
+    let h = map(corrBuff[i], -1, 1, 150, 0);
     curveVertex(w, h);
   }
   endShape();  
@@ -70,13 +70,13 @@ function draw() {
   translate(width/2, height*3/4);
   
 
-  var spectrum = fft.analyze();
+  let spectrum = fft.analyze();
   beginShape();
-  for(var i = spectrum.length / 4; i < spectrum.length - 9; i++) {
-    var r = map(spectrum[i], 0, 255, 10, width*3/4);
-    var angle = map(i, spectrum.length / 4, spectrum.length - 9, 150, 390);
-    var x = r * cos(angle);
-    var y = r * sin(angle);
+  for(let i = spectrum.length / 4; i < spectrum.length - 9; i++) {
+    let r = map(spectrum[i], 0, 255, 10, width*3/4);
+    let angle = map(i, spectrum.length / 4, spectrum.length - 9, 150, 390);
+    let x = r * cos(angle);
+    let y = r * sin(angle);
     nZstroke = noise(nZstroke);
     strokeWeight(3 * nZstroke);
     stroke(color_1);
@@ -101,28 +101,28 @@ function draw() {
 }
 
 function autoCorrelate(buffer) {
-  var newBuffer = [];
-  var nSamples = buffer.length;
+  let newBuffer = [];
+  let nSamples = buffer.length;
 
-  var autocorrelation = [];
+  let autocorrelation = [];
 
   // center clip removes any samples under 0.1
   if (centerClip) {
-    var cutoff = 0.1;
-    for (var i = 0; i < buffer.length; i++) {
-      var val = buffer[i];
+    let cutoff = 0.1;
+    for (let i = 0; i < buffer.length; i++) {
+      let val = buffer[i];
       buffer[i] = Math.abs(val) > cutoff ? val : 0;
     }
   }
 
-  for (var lag = 0; lag < nSamples; lag++){
-    var sum = 0; 
-    for (var index = 0; index < nSamples; index++){
-      var indexLagged = index+lag;
+  for (let lag = 0; lag < nSamples; lag++){
+    let sum = 0; 
+    for (let index = 0; index < nSamples; index++){
+      let indexLagged = index+lag;
       if (indexLagged < nSamples){
-        var sound1 = buffer[index];
-        var sound2 = buffer[indexLagged];
-        var product = sound1 * sound2;
+        let sound1 = buffer[index];
+        let sound2 = buffer[indexLagged];
+        let product = sound1 * sound2;
         sum += product;
       }
     }
@@ -132,13 +132,13 @@ function autoCorrelate(buffer) {
   }
 
   if (bNormalize){
-    var biggestVal = 0;
-    for (var index = 0; index < nSamples; index++){
+    let biggestVal = 0;
+    for (let index = 0; index < nSamples; index++){
       if (abs(newBuffer[index]) > biggestVal){
         biggestVal = abs(newBuffer[index]);
       }
     }
-    for (var index = 0; index < nSamples; index++){
+    for (let index = 0; index < nSamples; index++){
       newBuffer[index] /= biggestVal;
     }
   }
@@ -175,8 +175,8 @@ function toggleSong(){
   }
 }
 
-function jumpSong(){
-   var len = song.duration();
-   var t = random(len);
-   song.jump(t);
- }
+function jumpSong() {
+  let len = song.duration();
+  let t = random(len);
+  song.jump(t);
+}

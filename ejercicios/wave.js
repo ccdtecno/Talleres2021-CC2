@@ -7,7 +7,7 @@ let posInicialY;
 let bandas
 
 function preload() {
-  sonido = loadSound('../songs/synth.mp3');
+  sonido = loadSound('synth.mp3');
   print('El sonido ha sido cargado');
 }
 
@@ -63,7 +63,7 @@ function draw() {
   push()
   noStroke()
   fill(0, 145, 173);
-  let w = width / 64;
+  let w = width / 32;
   let h = height/2
   espectro = transformada.analyze() 
   for(let i = 0; i < espectro.length; i++) {
