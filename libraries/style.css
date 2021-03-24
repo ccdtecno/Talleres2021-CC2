@@ -6,3 +6,63 @@ html, body {
     display: block;
   }
   
+
+  .container {
+    background: darkblue;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1,1fr);
+    /* grid-gap: 5px; */
+    width: 100%;
+    height: 50px;
+
+  }
+
+  .item {
+    background: #0909FF;
+    
+  }
+  
+  .item1 {
+    @extend .item;
+    display: flex;
+    justify-content: center;
+    align-items: center
+  }
+
+  .item2 {
+    @extend .item;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+  }
+  .item3 {
+    @extend .item;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+
+  .canvasContainer {
+    display: grid;
+    /* position: absolute; */
+    background: blue; 
+    justify-content: center;
+    width: 100%;
+    height:700px;
+    align-items: space-evenly;
+    /* top:50%; */
+  }
+
+  #sketch {
+
+    /* display: flex; */
+    position: relative;
+    align-self: center;
+    justify-content: center;
+    
+   
+  }

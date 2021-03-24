@@ -4,23 +4,32 @@ let grafica;
 let sliderArm, sliderAmp, sliderTime;
 
 function setup() {
-    let cnv =createCanvas(700,400);
+    let cnv =createCanvas(800,600);
     cnv.parent('sketch');
     let centroCirculo = createVector(width * 0.2, height * 0.5);
     let inicioGrafica = createVector(width * 0.5, height * 0.5);
     grafica = new PloterFourier(centroCirculo, inicioGrafica, amplitude, armonicos);
 
     sliderArm = createSlider(1,30,1,1);
-    sliderArm.style('transform: rotate(270deg)');
     // sliderVol.style('width: 392px');
     // sliderVol.style('transform: rotate(270deg)');
     // sliderArm.position(0,  height-sliderArm.width);
 
     sliderAmp = createSlider(0,100,0,1);
-    sliderAmp.style('transform: rotate(270deg)');
+    // sliderAmp.style('transform: rotate(270deg)');
 
     sliderTime = createSlider(0.008,0.08,0.001,0.0001);
-    sliderTime.style('transform: rotate(270deg)');
+    // sliderTime.style('transform: rotate(270deg)');
+
+    // print(sliderArm.parent());
+    sliderArm.parent('sketch');
+    sliderAmp.parent('sketch');
+    sliderTime.parent('sketch');
+
+    sliderArm.position(width*1/7-sliderArm.width/2,5);
+    sliderAmp.position(width/2-sliderAmp.width/2,5);
+    sliderTime.position(width*6/7-sliderTime.width/2,5);
+    // sliderTime.style('transform: rotate(270deg)');
     // frameRate(10);
 }
 

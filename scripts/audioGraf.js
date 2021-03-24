@@ -14,12 +14,15 @@ function setup()
   colorMode(HSB);
   sliderFreq = createSlider(0,800,0,0.01);
   sliderFreq.style('width: 794px');
+  sliderFreq.parent('sketch');
   sliderFreq.position(0,0);
 
   sliderVol = createSlider(0,1,0,0.01);
   sliderVol.style('width: 392px');
   sliderVol.style('transform: rotate(270deg)');
-  sliderVol.position(width-205,  height*3 /9 );
+  sliderVol.parent('sketch');
+  sliderVol.position(width-205,  height*3 /9 + 10);
+  
   
   osc1 = new p5.Oscillator();
   osc1.setType('sine');
@@ -28,7 +31,7 @@ function setup()
   
   osc1.freq(sliderFreq.value())
   osc1.amp(sliderVol.value());
-  osc1.start();
+  // osc1.start();
   
   fft = new p5.FFT();
   textColor = color(160,255,80);

@@ -7,6 +7,7 @@ class ADSR {
         this.pos = _pos;
         this.size = _size;
         this.finalPos = p5.Vector.add(_pos,_size);
+        // this.parent(sketch)
         
         this.gain = 1;
         // si el _synthMode == osc
