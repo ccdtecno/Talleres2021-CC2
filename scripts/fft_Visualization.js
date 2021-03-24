@@ -30,6 +30,11 @@ function setup() {
   // Creacion de sliders
   sliderVol = createSlider(0,1,0.5,0.001)
   sliderRate = createSlider(0,2,1,0.001)
+  button.parent('sketch');
+  stopButton.parent('sketch');
+  jumpButton.parent('sketch');
+  sliderVol.parent('sketch');
+  sliderRate.parent('sketch');
   
   mic = new p5.AudioIn();
   fft = new p5.FFT(0.6,64);

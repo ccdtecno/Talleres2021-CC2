@@ -12,11 +12,11 @@ class VCF {
         
         this.filter = new p5.Filter();
   
-        this.sliderGain = createSlider(0,1,0,0.01);
+        // this.sliderGain = createSlider(0,1,0,0.01);
         let sliderPosX = map(this.size.x*0.725, 0,this.size.x,this.pos.x,this.finalPos.x);
         let sliderPosY = map(this.size.y*0.45, 0,this.size.y,this.pos.y,this.finalPos.y); 
-        this.sliderGain.style('transform: rotate(270deg)');
-        this.sliderGain.position(sliderPosX,sliderPosY);
+        // this.sliderGain.style('transform: rotate(270deg)');
+        // this.sliderGain.position(sliderPosX,sliderPosY);
   
   
         this.sliderFreq = createSlider(0,200,200,0.1);
@@ -33,7 +33,7 @@ class VCF {
   
         this.filter.setType(this.type);     
         this.filter.freq(this.frecuency)
-        this.filter.gain(this.vol);
+        // this.filter.gain(this.vol);
   
         // posiciona la screen y el sliderVolumen
         let posPlotter = createVector(this.pos.x + this.size.x * 0.07,this.pos.y + this.size.y*0.25);
@@ -128,10 +128,10 @@ class VCF {
     // Sliders
     actualiza() {
       let freq = this.logslider(this.sliderFreq.value(), 0,200,20,20000);
-      let gain = this.sliderGain.value();
+      // let gain = this.sliderGain.value();
       let res = this.logslider(this.sliderRes.value(),0,1,1,1000);
       this.filter.freq(freq);
-      this.filter.gain(gain);
+      // this.filter.gain(gain);
       this.filter.res(res);
     }
   

@@ -11,18 +11,35 @@ function setup() {
   colorMode(HSB);
   textColor = color(160,255,80);
   
-  let posVCO = createVector(width/2, 0);
-  let posVCF = createVector(0,150);
-  let posADSR = createVector(width/2,150);
-  
-  let sizeVCO = createVector(300,150);
+  let posVCO = createVector(0, 0);
+  let posVCO2 = createVector(width/2, 0);
+  let posVCF = createVector(0,300);
+  let posADSR = createVector(width/2,300);
+  let sizeVCO = createVector(300,300);
 
   
-  vco1 = new VCO('sine',440,0.2);  
-  vco2 = new PWM(440,0.2,posVCO,sizeVCO);  
+  vco1 = new VCO('sine',440,0.2,posVCO,sizeVCO);  
+  vco2 = new PWM(440,0.2,posVCO2,sizeVCO);  
   filter = new VCF('lowpass',20000,1,posVCF,sizeVCO);
   adsr = new ADSR(0,0.1,0.5,0.3,posADSR,sizeVCO);
   
+  vco1.sliderVol.parent('sketch');
+  vco1.sliderFreq.parent('sketch');
+  vco1.sliderPan.parent('sketch');
+
+  vco2.sliderVol.parent('sketch');
+  vco2.sliderFreq.parent('sketch');
+  vco2.sliderPan.parent('sketch');
+  vco2.sliderPWM.parent('sketch');
+  
+  filter.sliderFreq.parent('sketch');
+  filter.sliderRes.parent('sketch');
+  // filter.sliderGain.parent('sketch');
+  
+  adsr.sliderAttack.parent('sketch');
+  adsr.sliderDecay.parent('sketch');
+  adsr.sliderSustain.parent('sketch');
+  adsr.sliderRelease.parent('sketch');
 
   vco1.unplugged();
   vco2.unplugged();
@@ -117,6 +134,10 @@ function keyPressed() {
     adsr.play(filter.getFilter());
     // print('Press T');
   }
+
+  if(key == 'g') {
+    adsr.triggerA(filter.getFilter());
+  }
   if(key == 'z') {  
     filter.changeFilter('lowpass');
     print('LowPassFilter');
@@ -149,18 +170,23 @@ function keyPressed() {
     filter.filterToggle();
     print('Toogle Filtro');
   }
+}
 
+function keyReleased() {
+  if(key == 'g') {
+    adsr.triggerR(filter.getFilter());
+  }
 }
 function mouseClicked() {
   
 }
 
 function mousePressed() {
-  adsr.triggerA(filter.getFilter());
+  // adsr.triggerA(filter.getFilter());
 }
 
 function mouseReleased() {
-  adsr.triggerR(filter.getFilter());
+  // adsr.triggerR(filter.getFilter());
 }
 
 

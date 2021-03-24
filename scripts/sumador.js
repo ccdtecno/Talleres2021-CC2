@@ -5,14 +5,14 @@
 */
 
 let graficas = [];
-let numGraficas = 8;
+let numGraficas = 6;
 let factor = 0.8
 let amplitude = 30;
 
 let sliderGraficas, sliderFactor, sliderAmplitude;
 
 function setup() {
-    let cnv = createCanvas(700,800);
+    let cnv = createCanvas(800,600);
     cnv.parent('sketch');
 
     // sliderGraficas = createSlider(1,15,1,1);
@@ -20,8 +20,8 @@ function setup() {
     // sliderAmplitude = createSlider(10,80,10,0.5);
 
     graficas = [numGraficas];
-    let polarInit = createVector(amplitude*2,amplitude*2);
-    let timeInit =  createVector(amplitude*6,amplitude*2)
+    let polarInit = createVector(amplitude*4,amplitude*2);
+    let timeInit =  createVector(amplitude*10,amplitude*2)
     
     let centroPolar, initGrafica, y, yT;
 
