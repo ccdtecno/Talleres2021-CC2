@@ -7,8 +7,8 @@ let sliderVel;
 let hat,kick;
 
 function preload() {
-    kick = loadSound('../songs/kick.wav');
-    hat = loadSound('../songs/hh.wav');
+    kick = loadSound('songs/kick.wav');
+    hat = loadSound('songs/hh.wav');
 }
 function setup() {
     getAudioContext().suspend();
