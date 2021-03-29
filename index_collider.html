@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/addons/p5.sound.js" integrity="sha512-KxzVm+IqxNNq0+SzT/zzd5PHxY4LPrN+v5gZJ6+JKqjeU3Cr4y/djAg5eNlKDWurn1SeKZpql/yeOMWblMSzOg==" crossorigin="anonymous"></script> -->
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.js" type="text/javascript"></script> -->
+        <script defer src="https://unpkg.com/p5.collide2d"></script>
+    
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+        
+        <script src="libraries/p5.js" ></script>
+        <script src="libraries/addons/p5.sound.js" ></script>
+        <script src="libraries/addons/p5.func.js" ></script>
+        <script src="libraries/PloterFourier.js" ></script>
+        
+    
+        <script src="libraries/synth/ScreenPlotter.js" type = "text/javascript"></script>
+        <script src="libraries/synth/VCO.js" type = "text/javascript"></script>
+        <script src="libraries/synth/VCF.js" type = "text/javascript"></script>
+        <script src="libraries/synth/ADSR.js" type = "text/javascript"></script>
+        <script src="libraries/synth/LFO.js" type = "text/javascript"></script>
+
+        <script src="libraries/collide/Colisionador.js" type = "text/javascript"></script>
+        <script src="libraries/collide/CajitaCollide.js" type = "text/javascript"></script>
+    
+        <link rel="stylesheet" type="text/css" href="libraries/style.css">
+        <meta charset="utf-8" />
+    
+      </head>
+      <body>
+    
+        
+        <div class="mainHero">
+          <div class="instruction">
+            <h3>Interactua con:</h3>
+            <p>" a " Start OSC</p>
+            <p>" s " Stop OSC</p>
+            <br>
+            <p>La posición en X de la bolita <br>determina la frecuencia <br>de corte del filtro</p>
+            <p><br>Cada cajita tiene asignada<br> una nota midi que controla <br>el tono del oscilador</p>
+          </div>
+          
+          <div class="canvasContainer">
+            <div id ="sketch">
+              <script src="scripts/soundCollider.js"></script>
+            </div>
+          </div>
+          
+          <div class="info">
+            <!-- <h3>Info</h3>
+            <p> info</p> -->
+          </div>
+        </div>
+    
+        
+        
+        <div class="butonContainer">
+    
+          <div class="item1">
+            <div class="buttom-item">
+              <form action="index_fft_visual.html">
+                <input type="submit" value=" <<< " />
+              </form>
+            </div>
+          </div>  
+    
+          <div class="item2">
+            <div class="instruction_item">soundCollider
+              <!-- <form action="index_spectro.html">
+                <input type="submit" value="More..." />
+              </form> -->
+            </div>
+          </div>  
+    
+          <div class="item3">
+            <div class="buttom-item">
+              <form action="index_seq.html">
+                <input type="submit" value=" >>> " />
+              </form>
+            </div>
+          </div>  
+    
+        </div>
+    
+      </body> 
+      
+    </html>
+    

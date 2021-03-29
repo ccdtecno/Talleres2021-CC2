@@ -20,6 +20,10 @@ class PloterFourier {
         this.sizePolarPlot = 1000;
         this.factor = 0;
         this.funcActual = 1;
+
+        this.colorAxis = color(2, 6, 89);
+        this.colorLinea = color(242, 203, 5,100);
+        this.colorExt = color( 217, 142, 4);
     }
 
     actualizar() {
@@ -117,7 +121,8 @@ class PloterFourier {
 
     dibujaAxis() {
         push();
-        stroke(255,100);
+        // stroke(255,100);
+        stroke(this.colorAxis)
         strokeWeight(1);
         // Dibuja los ejes en el plano del tiempo
         line(this.initPlotTime.x - 50, this.initPlotTime.y, this.initPlotTime.x + 450, this.initPlotTime.y);
@@ -161,8 +166,8 @@ class PloterFourier {
         // punto exterior del circulo mas pequeño
         push();
         strokeWeight(3);
-        stroke(210,120,50,100);
-
+        // stroke(210,120,50,100);
+        stroke(this.colorExt);
         beginShape();
         noFill();
         for(let i = 0; i < this.arrayEspyro.length/2; i+=2) {
@@ -177,7 +182,8 @@ class PloterFourier {
         // Dibuja la grafica de onda con respecto al tiempo
         push();
         strokeWeight(2);
-        stroke(200);
+        // stroke(200);
+        stroke(this.colorLinea)
         beginShape();
         noFill();
         for(let i = 0; i < this.arrayWaveTime.length; i++) {

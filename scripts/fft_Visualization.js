@@ -13,7 +13,8 @@ function preload(){
 
 
 function setup() {
-  let cnv = createCanvas(600, 600);
+  let canvasDiv = document.getElementById('sketch');
+  let cnv = createCanvas(canvasDiv.offsetWidth,canvasDiv.offsetHeight);
   cnv.parent('sketch')
   angleMode(DEGREES);
   colorMode(HSB);

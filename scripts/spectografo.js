@@ -4,7 +4,8 @@ let grafica;
 let sliderArm, sliderAmp, sliderTime;
 
 function setup() {
-    let cnv =createCanvas(800,600);
+    let canvasDiv = document.getElementById('sketch');
+    let cnv = createCanvas(canvasDiv.offsetWidth,canvasDiv.offsetHeight);
     cnv.parent('sketch');
     let centroCirculo = createVector(width * 0.2, height * 0.5);
     let inicioGrafica = createVector(width * 0.5, height * 0.5);
@@ -15,7 +16,7 @@ function setup() {
     // sliderVol.style('transform: rotate(270deg)');
     // sliderArm.position(0,  height-sliderArm.width);
 
-    sliderAmp = createSlider(0,100,0,1);
+    sliderAmp = createSlider(0,150,0,1);
     // sliderAmp.style('transform: rotate(270deg)');
 
     sliderTime = createSlider(0.008,0.08,0.001,0.0001);
@@ -34,7 +35,13 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+    background(13, 13, 13)
+    fill(255);
+    textSize(12)
+    text("armónicos: "+ str(sliderArm.value()),width*1/7-sliderArm.width/4,40);
+    text("amplitud: "+ str(sliderAmp.value()),width/2-sliderAmp.width/4,40);
+    text("vel: "+ str(sliderTime.value()),width*6/7-sliderTime.width/4,40);
+    
     grafica.setArmonicos(sliderArm.value());
     grafica.setAmp(sliderAmp.value());
     grafica.setTimeStep(sliderTime.value());

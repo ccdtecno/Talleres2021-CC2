@@ -7,13 +7,18 @@ let posInicialY;
 let bandas
 
 function preload() {
-  sonido = loadSound('synth.mp3');
+  sonido = loadSound('songs/synth.mp3');
   print('El sonido ha sido cargado');
 }
 
 function setup() {
-  createCanvas(400, 400);
-  // rectMode(CENTER);
+  // Descomentar  esta linea para implementar en p5.WebEditor
+  // createCanvas(400, 400);
+
+  // Comentar estas lineas para implementar en p5.WebEditor
+  let cnv = createCanvas(800, 600);
+  cnv.parent('sketch');
+
   //Creacion de elementos del DOM
   botonPlay = createButton('Play / Pause');
   botonPlay.mousePressed(toggle);
@@ -22,10 +27,13 @@ function setup() {
   botonStop = createButton('Random');
   botonStop.mousePressed(aleatorio);
   sliderVol = createSlider(0,1,0.5,0.001)
+
+  // Variables para la definicion del tipo de analisis FFT
   bandas = 1024;
   transformada = new p5.FFT(.8,bandas);
   amplitud = new p5.Amplitude();
-  
+
+  //Punto para la posicion inicial de la grafica de la onda
   posInicialY = height/2;
 }
 

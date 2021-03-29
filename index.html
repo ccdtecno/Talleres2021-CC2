@@ -3,21 +3,23 @@
   <head>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/addons/p5.sound.js" integrity="sha512-KxzVm+IqxNNq0+SzT/zzd5PHxY4LPrN+v5gZJ6+JKqjeU3Cr4y/djAg5eNlKDWurn1SeKZpql/yeOMWblMSzOg==" crossorigin="anonymous"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.js" type="text/javascript"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.js" type="text/javascript"></script> -->
+    <script defer src="https://unpkg.com/p5.collide2d"></script>
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    
     <script src="libraries/p5.js" ></script>
     <script src="libraries/addons/p5.sound.js" ></script>
     <script src="libraries/addons/p5.func.js" ></script>
     <script src="libraries/PloterFourier.js" ></script>
+    
 
     <script src="libraries/synth/ScreenPlotter.js" type = "text/javascript"></script>
     <script src="libraries/synth/VCO.js" type = "text/javascript"></script>
     <script src="libraries/synth/VCF.js" type = "text/javascript"></script>
     <script src="libraries/synth/ADSR.js" type = "text/javascript"></script>
     <script src="libraries/synth/LFO.js" type = "text/javascript"></script>
-
-
 
     <link rel="stylesheet" type="text/css" href="libraries/style.css">
     <meta charset="utf-8" />
@@ -39,13 +41,32 @@
     <!-- <script src="scripts/fft_Visualization.js"></script> -->
     
     <!-- <script src="ejercicios/wave.js"></script> -->
-    <div class="canvasContainer">
-      <script src="scripts/sumador.js"></script>
-      <div id ="sketch"></div>
+
+    <div class="mainHero">
+      <div class="instruction">
+        <!-- HOLA -->
+      </div>
+      
+      <div class="canvasContainer">
+        <div id ="sketch">
+          <script src="scripts/sumador.js"></script>
+          
+          <!-- <script src="ejercicios/wave.js"></script> -->
+          <!-- <script src="ejercicios/synteBase.js"></script> -->
+          <!-- <script src="ejercicios/basicCollider.js"></script> -->
+        </div>
+      </div>
+      
+      <div class="info">
+        <h3>Descomponiendo el sonido</h3>
+        <p> Series de Fourier</p>
+      </div>
     </div>
+
     
     
-    <div class="container">
+    <div class="butonContainer">
+
       <div class="item1">
         <div class="buttom-item">
           <form action="index_spectro.html">

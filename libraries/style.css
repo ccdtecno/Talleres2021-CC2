@@ -6,10 +6,16 @@ html, body {
   canvas {
     display: block;
   }
-  
 
-  .container {
-    background: darkblue;
+  :root {
+    --container-color: #020126; 
+    --canvas-color: #025E73; 
+    
+  }
+  .butonContainer {
+    /* background: darkblue; */
+    background: var(--container-color);
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(1,1fr);
@@ -50,12 +56,32 @@ html, body {
   .canvasContainer {
     display: grid;
     /* position: absolute; */
-    background: blue; 
+    /* background: blue;  */
+    background: var(--container-color);
     justify-content: center;
     width: 100%;
     height:700px;
     align-items: space-evenly;
     /* top:50%; */
+  }
+
+  .mainHero { 
+    display: grid;
+    grid-template: reapeat(3,1fr) / 1fr;
+    grid-template-areas: 
+    "instruction  canvasConatiner info";
+    background: var(--container-color) ;
+    color: #FFFFFF;
+  }
+
+  .instruction {
+    /* justify-self: center;
+    align-self: center; */
+    place-self: center center;
+  }
+
+  .info {
+    place-self: center center;
   }
 
   #sketch {
@@ -64,6 +90,7 @@ html, body {
     position: relative;
     align-self: center;
     justify-content: center;
-    
+    width: 800px;
+    height: 600px;
    
   }

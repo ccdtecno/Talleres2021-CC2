@@ -3,13 +3,17 @@
   <head>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/addons/p5.sound.js" integrity="sha512-KxzVm+IqxNNq0+SzT/zzd5PHxY4LPrN+v5gZJ6+JKqjeU3Cr4y/djAg5eNlKDWurn1SeKZpql/yeOMWblMSzOg==" crossorigin="anonymous"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.js" type="text/javascript"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.js" type="text/javascript"></script> -->
+    <script defer src="https://unpkg.com/p5.collide2d"></script>
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    
     <script src="libraries/p5.js" ></script>
     <script src="libraries/addons/p5.sound.js" ></script>
     <script src="libraries/addons/p5.func.js" ></script>
     <script src="libraries/PloterFourier.js" ></script>
+    
 
     <script src="libraries/synth/ScreenPlotter.js" type = "text/javascript"></script>
     <script src="libraries/synth/VCO.js" type = "text/javascript"></script>
@@ -17,34 +21,58 @@
     <script src="libraries/synth/ADSR.js" type = "text/javascript"></script>
     <script src="libraries/synth/LFO.js" type = "text/javascript"></script>
 
-
-
     <link rel="stylesheet" type="text/css" href="libraries/style.css">
     <meta charset="utf-8" />
 
   </head>
   <body>
-    <!-- <script src="ejemplos/CC2_1Cargar Audio.js"></script> -->
-    <!-- <script src="ejemplos/CC2_1Sliders.js"></script> -->
-    <!-- <script src="ejemplos/CC2_1Botones.js"></script> -->
-    <!-- <script src="ejemplos/CC2_2Reverb.js"></script> -->
-    <!-- <script src="ejemplos/CC2_3Sintesis.js"></script> -->
-    <!-- <script src="ejemplos/CC2_4Microfono.js"></script> -->
-    <!-- <script src="ejemplos/CC2_4FFT.js"></script> -->
+
     
-    <!-- <script src="scripts/sumador.js"></script> -->
-    <!-- <script src="scripts/spectografo.js"></script> -->
-    <!-- <script src="scripts/audioGraf.js"></script> -->
-    <script src="scripts/synth.js"></script>
-    <!-- <script src="scripts/fft_Visualization.js"></script> -->
-    
-    <!-- <script src="ejercicios/wave.js"></script> -->
-    <div class="canvasContainer">
-      <div id ="sketch"></div>
+    <div class="mainHero">
+      <div class="instruction" style="font-size:smaller;">
+        <h3>Interactua con:</h3>
+        <!-- <p>Interactua con el teclado:</p> -->
+        <p>"1" Senoidal</p>
+        <p>"2" Triangular</p>
+        <p>"3" Cuadrada</p>
+        <p>"4" Diente de Sierra</p>
+        <p><br></p>
+        <p>"a" Start OSC 1</p>
+        <p>"j" Start OSC 2</p>
+        <p>"s" Stop</p>
+        <p><br></p>
+        <p>"t" trigger</p>
+        <p>"g" gate</p>
+        <p><br></p>
+        
+        
+      </div>
+      
+      <div class="canvasContainer">
+        <div id ="sketch"></div>
+        <script src="scripts/synth.js"></script>
+      </div>
+      
+      <div class="info" style="font-size:smaller;">
+        <!-- <h3>Info</h3> -->
+        <p>"8" PWM1</p>
+        <p>"9" PWM2</p>
+        <p>"0" PWM3</p>
+        <p><br>FILTROS</p>
+        <p>"z" LowPass</p>
+        <p>"x" HighPass</p>
+        <p>"c" BandPass</p>
+        <p><br></p>
+        <p>"w" onda </p>
+        <p>"l" escala</p>
+        <p><br></p>
+      </div>
     </div>
+
     
     
-    <div class="container">
+    <div class="butonContainer">
+
       <div class="item1">
         <div class="buttom-item">
           <form action="index_waveGraf.html">
@@ -68,8 +96,10 @@
           </form>
         </div>
       </div>  
+
     </div>
-    
-    
+
   </body> 
+  
 </html>
+

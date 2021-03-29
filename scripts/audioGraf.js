@@ -7,8 +7,9 @@ var bNormalize = true;
 var centerClip = false;
 
 function setup()
-{
-  let cnv = createCanvas(800, 600);
+{ 
+  let canvasDiv = document.getElementById('sketch');
+  let cnv = createCanvas(canvasDiv.offsetWidth,canvasDiv.offsetHeight);
   cnv.parent('sketch');
   fill(255);
   colorMode(HSB);
@@ -51,9 +52,10 @@ function draw()
   // Texto de informacion
   noStroke();
   fill(textColor);
-  text('Oscilador: ' + osc1.getType(),width/5,50);
-  text(freq + '  Hz',width*2/5, 50);
-  text(vol + ' vol', width*3/5, 50);  
+  textSize(16)
+  text('osc: ' + osc1.getType(),width*1/9,50);
+  text(int(freq) + '  hz',width*3/9, 50);
+  text(vol * 100 + ' vol', width*5/9, 50);  
   
   // Espectro de frecuencias
   let spectrum = fft.analyze(1024);
@@ -67,14 +69,14 @@ function draw()
       let b = map(spectrum[i], 0, 255, 0, height/3)
       rect(a, height, width / spectrum.length, -b)
       fill(textColor);
-      text('LOG',width*3/4,50);
+      text('LOG',width*7/9,50);
 
     } else {
       let a = map(i, 0, spectrum.length, 0, width);
       let b = map(spectrum[i], 0, 255, 0,height/3);
       rect(a, height, width / spectrum.length, -b )
       fill(textColor);
-      text('LIN',width*3/4,50);
+      text('LIN',width*7/9,50);
     } 
     
     
@@ -116,10 +118,10 @@ function keyPressed() {
     osc1.setType('square');
   if(key == '4')
   osc1.setType('sawtooth');
-  if(key == 'i') {
+  if(key == 'a') {
     osc1.start();
   }
-  if(key == 'o') {
+  if(key == 's') {
     osc1.stop();
   }
   if(key == 'l') {

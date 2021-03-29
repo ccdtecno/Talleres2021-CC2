@@ -12,7 +12,8 @@ let amplitude = 30;
 let sliderGraficas, sliderFactor, sliderAmplitude;
 
 function setup() {
-    let cnv = createCanvas(800,600);
+    let canvasDiv = document.getElementById('sketch');
+    let cnv = createCanvas(canvasDiv.offsetWidth,canvasDiv.offsetHeight);
     cnv.parent('sketch');
 
     // sliderGraficas = createSlider(1,15,1,1);

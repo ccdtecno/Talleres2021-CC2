@@ -6,7 +6,8 @@ let modLFO;
 let lfoState = false;
 
 function setup() {
-  let cnv = createCanvas(600, 600);  
+  let canvasDiv = document.getElementById('sketch');
+  let cnv = createCanvas(canvasDiv.offsetWidth,canvasDiv.offsetHeight);
   cnv.parent('sketch');
   colorMode(HSB);
   textColor = color(160,255,80);
@@ -122,13 +123,14 @@ function keyPressed() {
   }
   if(key == 's') {  
     vco1.oscStop();
+    vco2.oscStop();
   }
 
   if(key == 'j') {
     vco2.oscStart();
   }
   if(key == 'k') {  
-    vco2.oscStop();
+    // vco2.oscStop();
   }
   if(key == 't') {  
     adsr.play(filter.getFilter());
