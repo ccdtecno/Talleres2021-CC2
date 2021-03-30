@@ -91,6 +91,9 @@ html, body {
     place-self: center center;
   }
 
+  .info > h3{
+    color:yellow;
+  }
   #sketch {
 
     /* display: flex; */
