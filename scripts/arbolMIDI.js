@@ -20,6 +20,9 @@ function setup() {
   angulo = 30;
   tronco = 180;
   factor = 0.72;
+
+  background(bgColor);
+  arboles();
   audioIn = new p5.AudioIn();
 //   (audioIn.getSources(gotSources));
   audioIn.start();
@@ -44,8 +47,10 @@ function setup() {
   for(i = 0; i< WebMidi.outputs.length; i++) {
     console.log(i + ": " + WebMidi.outputs[i].name); 	
   }  
-    
-  inputSoftware = WebMidi.inputs[0];
+  
+  let x = prompt("¿Cuál es tu puerto MIDI?");
+  // console.log(int(x));
+  inputSoftware = WebMidi.inputs[x];
      
   inputSoftware.addListener('noteon', "all", function (e) {
     // print(e.note);
@@ -64,12 +69,12 @@ function setup() {
     }
 
     if(e.note.name + e.note.octave=="E4"){
-        tronco = random(150,250);
+        tronco = random(120,250);
     }
     
     //Numero MIDI: 65 nota F4
     if(e.note.number==65){
-      factor =  random(0.45,0.65);
+      factor =  random(0.4,0.65);
     }
     //Numero MIDI: 60 nota C4
     if(e.note.number==60){
@@ -86,8 +91,8 @@ function setup() {
       }
     });
   });
-  background(bgColor);
-  arboles();
+  
+  
 } 
 
 function draw() { 
