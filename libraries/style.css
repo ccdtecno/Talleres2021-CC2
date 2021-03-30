@@ -77,8 +77,15 @@ html, body {
   .instruction {
     /* justify-self: center;
     align-self: center; */
+    padding: 50px;
     place-self: center center;
+    justify-self: end; 
+    
   }
+  .instruction > h3 {
+    justify-self: stretch;
+    color:yellow;
+    }
 
   .info {
     place-self: center center;
