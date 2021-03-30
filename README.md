@@ -1,13 +1,13 @@
 # Talleres2021-CC2
 
-Aquí se puede encontrar la información del taller "Sonido y web" por impartirse en el Centro de Cultura Digital
-
+Aquí se puede encontrar el código y la información del taller "Sonido y web" del Centro de Cultura Digital.
 Interactúa con el código en:
 https://ccdtecno.github.io/Talleres2021-CC2/
 
+
 Para ejecutar la pagina web de manera local se necesita tener **node.js** y **browser-sync** instalados.
 
-En caso de no tenerlo ejecutar en la terminal:
+En caso de no tenerlos instalados ejecutar en la terminal:
 ```
 sudo apt update
 sudo apt install nodejs
@@ -17,6 +17,8 @@ Una vez instalado node, agragar el paquete de npm:
 ```
 npm install -g browser-sync
 ```
+
+
 Descarga el código y ve a la carpeta descargada
 ```
 git clone https://github.com/ccdtecno/Talleres2021-CC2.git
