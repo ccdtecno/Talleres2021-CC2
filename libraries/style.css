@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: 'Comfortaa', cursive;
+    font-size: medium;
   }
   canvas {
     display: block;
