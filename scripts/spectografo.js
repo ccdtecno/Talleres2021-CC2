@@ -27,9 +27,9 @@ function setup() {
     sliderAmp.parent('sketch');
     sliderTime.parent('sketch');
 
-    sliderArm.position(width*1/7-sliderArm.width/2,5);
-    sliderAmp.position(width/2-sliderAmp.width/2,5);
-    sliderTime.position(width*6/7-sliderTime.width/2,5);
+    sliderArm.position(width*1/7 - 100,5);
+    sliderAmp.position(width/2 - 100,5);
+    sliderTime.position(width*6/7 - 100,5);
     // sliderTime.style('transform: rotate(270deg)');
     // frameRate(10);
 }
@@ -38,9 +38,9 @@ function draw() {
     background(13, 13, 13)
     fill(255);
     textSize(12)
-    text("armónicos: "+ str(sliderArm.value()),width*1/7-sliderArm.width/4,40);
-    text("amplitud: "+ str(sliderAmp.value()),width/2-sliderAmp.width/4,40);
-    text("vel: "+ str(sliderTime.value()),width*6/7-sliderTime.width/4,40);
+    text("armónicos: "+ str(sliderArm.value()),width*1/7-60,40);
+    text("amplitud: "+ str(sliderAmp.value()),width/2-60,40);
+    text("vel: "+ str(sliderTime.value()),width*6/7-60,40);
     
     grafica.setArmonicos(sliderArm.value());
     grafica.setAmp(sliderAmp.value());

@@ -120,6 +120,7 @@ function keyPressed() {
   
   if(key == 'a') {
     vco1.oscStart();
+    vco2.oscStart();
   }
   if(key == 's') {  
     vco1.oscStop();
@@ -127,7 +128,7 @@ function keyPressed() {
   }
 
   if(key == 'j') {
-    vco2.oscStart();
+    
   }
   if(key == 'k') {  
     // vco2.oscStop();

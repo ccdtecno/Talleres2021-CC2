@@ -39,7 +39,7 @@ function setup() {
   //Aplicar Reverb
   reverb = new p5.Reverb();
   reverb.process(osc, 6,0.1);
-  reverb.drywet();
+  // reverb.drywet();
   
   
   delay = new p5.Delay();
