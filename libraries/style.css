@@ -91,7 +91,6 @@ body {
 
   .header-navbar--menu img{
       height: 48px;
-      /* color: lightgoldenrodyellow; */
   }
 
   .card-info {
@@ -103,7 +102,6 @@ body {
     min-height: 75vh;
     background: var(--white);
     border-radius: 8px;
-    /* border: none; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
 }
 
@@ -113,13 +111,10 @@ body {
       color: var(--medium-green);
       font-size: 1.1rem;
       line-height: 1.8rem;
-        /* padding:1rem 1rem; */
     }
 
     .card-info--info {
         padding-top: 1rem;
-        /* padding-bottom: 4rem; */
-
         text-align: left;
         font-weight: 400;
         color: var(--warm-black);
