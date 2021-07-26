@@ -1,484 +1,391 @@
-import "../globals";
-const sketch = (p5) => {
-  let vco1;
-  let isRunning = false;
-  // vco2, filter;
-  // let adsr;
-  // let textColor;
-  // let modLFO;
-  // let lfoState = false;
+let isPlaying = false;
+let isLog = true;
+let bNormalize = true;
+let centerClip = false;
+let osc1, osc2, lpf, hpf, rev, env, fft, del;
+let noteOsc1, volOsc1;
+let noteOsc2, volOsc2;
+let lowFreq, resLowFreq, highFreq
+let drywetReverb, drywetDelay;
+let correlationColor, waveColor, freqColor, textColor, backColor;
+let attack,decay,sustain,release;
 
-  p5.setup = () => {
-    // console.log(p5);
-    p5.createCanvas(800, 600).mousePressed(() => {
-      if (isRunning) this.osc.stop();
-      else this.osc.start();
-      isRunning = !isRunning;
-    });
-    p5.colorMode(p5.HSB);
-    // textColor = p5.color(160, 255, 80);
-    let posVCO = p5.createVector(0, 0);
-    // let posVCO2 = createVector(width/2, 0);
-    // let posVCF = createVector(0,300);
-    // let posADSR = createVector(width/2,300);
-    let sizeVCO = p5.createVector(300, 300);
+function setup() {
+  createCanvas(400, 300).parent("sketch-container").mousePressed(canvasPressed);
+  osc1 = new p5.Oscillator("sawtooth", 220);
+  osc2 = new p5.Oscillator("square",440);
+  lpf = new p5.Filter();
+  hpf = new p5.Filter("highpass")
+  env = new p5.Envelope(0,1,0.5,0.2,0.1,0);
+  del = new p5.Delay();
+  rev = new p5.Reverb();
+  fft = new p5.FFT();
 
-    vco1 = new VCO("sine", 440, 0.2, posVCO, sizeVCO);
-    // vco2 = new PWM(440,0.2,posVCO2,sizeVCO);
-    // filter = new VCF('lowpass',20000,1,posVCF,sizeVCO);
-    // adsr = new ADSR(0,0.1,0.5,0.3,posADSR,sizeVCO);
-    //
-    // vco1.sliderVol.parent('sketch');
-    // vco1.sliderFreq.parent('sketch');
-    // vco1.sliderPan.parent('sketch');
-    //
-    // vco2.sliderVol.parent('sketch');
-    // vco2.sliderFreq.parent('sketch');
-    // vco2.sliderPan.parent('sketch');
-    // vco2.sliderPWM.parent('sketch');
-    //
-    // filter.sliderFreq.parent('sketch');
-    // filter.sliderRes.parent('sketch');
-    // filter.sliderGain.parent('sketch');
-    //
-    // adsr.sliderAttack.parent('sketch');
-    // adsr.sliderDecay.parent('sketch');
-    // adsr.sliderSustain.parent('sketch');
-    // adsr.sliderRelease.parent('sketch');
-    //
-    // vco1.unplugged();
-    // vco2.unplugged();
-    //
-    // vco1.setScreen();
-    // vco2.setScreen();
-    // filter.setScreen();
-    //
-    // vco1.plug(filter.getFilter());
-    // vco2.plug(filter.getFilter());
-    //   filter.unplugged();
-    //
-    // filter.plug();
-    // modLFO = lfo.getLFO();
-    // console.log(window.p5);
-    // console.log(sketch);
-  };
+  noteOsc1 = createSlider(1,127,40,1).parent("sketch-info").mousePressed(actualizaOsc);
+  volOsc1 = createSlider(0,1,0.1,0.001).parent("sketch-info").mousePressed(actualizaOsc);
+  noteOsc2 = createSlider(-24,24,0,1).parent("sketch-info").mousePressed(actualizaOsc);
+  volOsc2 = createSlider(0,1,0,0.001).parent("sketch-info").mousePressed(actualizaOsc);
+  highFreq = createSlider(1,127,1,1).parent("sketch-info-2").mousePressed(actualizaOsc);
+  lowFreq = createSlider(10,136,136,1).parent("sketch-info-2").mousePressed(actualizaOsc);
+  resLowFreq = createSlider(0.001,50,0,0.01).parent("sketch-info-2").mousePressed(actualizaOsc);
+  
+  drywetReverb = createSlider(0,1,0,0.01).parent("sketch-info-3").mousePressed(actualizaOsc);
+  drywetDelay = createSlider(0,1,0,0.01).parent("sketch-info-3").mousePressed(actualizaOsc);
 
-  p5.draw = () => {
-    if (isRunning) {
-      p5.background(30);
-      // vco1.actualiza();
-      vco1.dibuja();
-      // vco2.actualiza();
-      // vco2.dibuja();
-      // filter.actualiza();
-      // print(lfo.getAmp());
-      // filter.dibuja();
-      // filter.dibujaMod(lfo.getLFO());
-      // filter.setFreq(ad.getEnvelope());
-      // adsr.actualiza();
-      // adsr.dibuja();
-    } else {
-      p5.push();
-      p5.background(0);
-      p5.textAlign(p5.CENTER);
-      p5.textSize(24);
-      p5.noStroke();
-      p5.fill(255);
-      p5.text("Presiona el canvas para empezar", p5.width / 2, p5.height / 2);
-      p5.pop();
-    }
-  };
+  attack = createSlider(0.01,3,0.01,0.01).parent("sketch-info-4").mousePressed(actualizaADSR);
+  decay = createSlider(0.01,3,1,0.01).parent("sketch-info-4").mousePressed(actualizaADSR);
+  sustain = createSlider(0,1,0.1,0.01).parent("sketch-info-4").mousePressed(actualizaADSR);
+  release = createSlider(0.01,2,0.01,0.01).parent("sketch-info-4").mousePressed(actualizaADSR);
 
-  p5.keyPressed = () => {
-    let key = p5.key;
-    if (key == "1") {
-      vco1.changeVoice("sine");
-    }
-    if (key == "2") {
-      vco1.changeVoice("triangle");
-    }
-    if (key == "3") {
-      vco1.changeVoice("square");
-    }
-    if (key == "4") {
-      vco1.changeVoice("sawtooth");
-    }
-    if (key == "8") {
-      // vco2.changeVoice('triangle')
-    }
-    if (key == "9") {
-      // vco2.changeVoice('square')
-    }
-    if (key == "0") {
-      // vco2.changeVoice('sawtooth')
-    }
-    if (key == "w") {
-      vco1.changeWave();
-      // vco2.changeWave();
-      // filter.changeWave();
-    }
+  osc1.disconnect();
+  osc2.disconnect();
+  hpf.disconnect();
+  // lpf.disconnect();
+  osc1.connect(hpf);
+  osc2.connect(hpf);
+  hpf.connect(lpf);
+  rev.process(lpf,3,2);
+  del.process(lpf,.5,0.75,5000);
+  env.setInput(lpf);
 
-    if (key == "q") {
-      // vco2.changeMode();
-      vco1.changeMode();
-      // filter.changeMode();
-      // print(screen.isLog);
-    }
+  correlationColor = color(191, 90, 54);
+  textColor = color(217, 184, 143);
+  waveColor = color(242, 124, 56);
+  freqColor = color(217, 159, 89);
+  backColor = color(1,16,41);
+  backColor2 = color(65,58,60);
+  // background(backColor);
+  
+  // setGradient(0, 0, width/2, height/2, color(0), color(255), "X_AXIS");
+}
 
-    if (key == "a") {
-      vco1.oscStart();
-      // vco2.oscStart();
-    }
-    if (key == "s") {
-      vco1.oscStop();
-      // vco2.oscStop();
-    }
-    // if (key == "j") {
-    // }
-    if (key == "k") {
-      // vco2.oscStop();
-    }
-    if (key == "t") {
-      // adsr.play(filter.getFilter());
-      // print('Press T');
-    }
-    if (key == "g") {
-      // adsr.triggerA(filter.getFilter());
-    }
-    if (key == "z") {
-      // filter.changeFilter('lowpass');
-      // print('LowPassFilter');
-    }
-    if (key == "x") {
-      // filter.changeFilter('highpass');
-      // print('HighPassFilter');
-    }
-    if (key == "c") {
-      // filter.changeFilter('bandpass');
-      // print('BandPassFilter');
-    }
-    // if(key == 'v') {
-    //   filter.changeFilter('lowshelf');
-    // }
-    // if(key == 'b') {
-    //   filter.changeFilter('highshelf');
-    // }
-    // if(key == 'n') {
-    //   filter.changeFilter('peaking');
-    // }
-    // if(key == 'm') {
-    //   filter.changeFilter('notch');
-    // }
-    if (key == ",") {
-      // filter.filterToggle();
-      // print('Toogle Filtro');
-    }
-  };
 
-  p5.keyReleased = () => {
-    if (p5.key == "g") {
-      // adsr.triggerR(filter.getFilter());
-    }
-  };
-  // p5.mouseClicked = () => {}
-  // p5.mousePressed = () => {}
-  // p5.mouseReleased = () => {}
-  /*eslint-disable*/
-  class VCO {
-    constructor(_type,_frecuency,_volume, _pos = p5.createVector(0,0), _size = p5.createVector(300,150), _synthMode = 'osc') {
-        this.type = _type;
-        this.frecuency = _frecuency;
-        this.vol = _volume;
-        this.pos = _pos;
-        this.size = _size;
-        this.finalPos = p5.constructor.Vector.add(_pos,_size);
-        this.plotWave = true;
-        
-        this.osc = new p5.constructor.Oscillator();
-        console.log(this.osc);
-  
-        this.sliderVol = p5.createSlider(0,1,0.1,0.01);
-        let sliderPosX = p5.map(this.size.x*0.725, 0,this.size.x,this.pos.x,this.finalPos.x);
-        let sliderPosY = p5.map(this.size.y*0.45, 0,this.size.y,this.pos.y,this.finalPos.y); 
-        this.sliderVol.style('transform: rotate(270deg)');
-        this.sliderVol.position(sliderPosX,sliderPosY);
-  
-  
-        this.sliderFreq = p5.createSlider(0,200,50,0.1);
-        this.sliderFreq.style('width: 245px');
-        sliderPosX = p5.map(this.size.x*0.05, 0,this.size.x,this.pos.x,this.finalPos.x); 
-        sliderPosY = p5.map(this.size.y*0.05, 0,this.size.y,this.pos.y,this.finalPos.y); 
-        this.sliderFreq.position(sliderPosX,sliderPosY);
-        
-        this.sliderPan = p5.createSlider(-1,1,0,0.01);
-        this.sliderPan.style('width: 245px');
-        sliderPosX = p5.map(this.size.x*0.05, 0,this.size.x,this.pos.x,this.finalPos.x); 
-        sliderPosY = p5.map(this.size.y*0.8, 0,this.size.y,this.pos.y,this.finalPos.y); 
-        this.sliderPan.position(sliderPosX,sliderPosY);
-  
-        this.osc.setType(this.type);     
-        this.osc.freq(this.frecuency)
-        this.osc.amp(this.vol);
-        this.f = this.osc.freq.bind(window);
-  
-        // posiciona la screen y el sliderVolumen
-        let posPlotter = p5.createVector(this.pos.x + this.size.x * 0.07,this.pos.y + this.size.y*0.25);
-        let sizePlotter = p5.createVector(this.size.x*.8,this.size.y*.5);
-        this.screen = new ScreenPlotter(sizePlotter,posPlotter);
-        this.screen.configEntrada(this.osc);
-        
-    }
-    
-    setScreen() {
-      this.screen.configEntrada(this.osc);
-    }
-  
-    getSound() {
-      return this.osc;
-    }
-  
-    unplugged() {
-      this.osc.disconnect();
-    }
-  
-    plug(sound) {
-      this.osc.connect(sound);
-    }
-    oscStart() {
-      this.osc.start();
-    }
-  
-    oscStop() {
-      // this.osc.amp(0,1);
-      this.osc.stop();
-    }
-    
-    setFreq(freq) {
-      this.frecuency = freq;
-      this.osc.freq(this.frecuency);
-    }
-  
-    setVolume(vol) {
-        this.vol = vol;
-        this.osc.amp(this.vol);
-    }
-  
-    setPan(pan) {
-      this.osc.pan(pan);
-    }
-  
-    setPhase(phase) {
-        this.osc.phase(phase);
-    }
-    
-    changeWave() {
-      this.plotWave =! this.plotWave;
-      // print(this.plotWave);
-    }
-    changeMode() {
-        this.screen.changePlot();
-    }
-  
-    changeVoice(wave) {
-      switch(wave) {
-          case 'sine':
-              this.osc.setType('sine');
-              break;
-          case 'triangle':
-              this.osc.setType('triangle');
-              break;
-          case 'square':
-              this.osc.setType('square');
-              break;
-          case 'sawtooth':
-              this.osc.setType('sawtooth');
-              break;
-      }
-    }
-  
-    logslider(position, min ,max, minLog, maxLog) {
-      var minp = min;
-      var maxp = max;
-      var minv = Math.log(minLog);
-      var maxv = Math.log(maxLog);
-      var scale = (maxv-minv) / (maxp-minp);
-    
-      return Math.exp(minv + scale*(position-minp));
-    }
-  
-    // Sliders
-    actualiza() {
-      let f = this.logslider(this.sliderFreq.value(), 0,200,20,20000);
-      // let vol = this.sliderVol.value();
-      // let pan = this.sliderPan.value();
-      // this.osc.freq(f);
-      this.f(f);
-      // this.osc.amp(vol);
-      // this.osc.pan(pan);
-    }
-  
-    dibuja = () => {
-      this.actualiza();
-      p5.push();
-      p5.noStroke();
-      p5.fill(0);
-      p5.rect(this.pos.x,this.pos.y,this.size.x,this.size.y);
-      p5.pop();
-  
-      if(this.plotWave) {
-          // this.screen.plotWave(this.fft);
-          this.screen.plotWave();
+function draw() {
+  // background(backColor);
+  // setGradient(0, 0, width, height, color(0), color(255), "Y_AXIS");
+  setGradient(0, 0, width, height, backColor, correlationColor, "Y_AXIS_INVERSE");
+  // setGradient(0, 0, width, height, color(0), color(255), "X_AXIS");
+  // setGradient(0, 0, width, height, color(0), color(255), "X_AXIS_INVERSE");
+  if(isPlaying) {
+    // actualizaOsc();
+    ploter();
+    textPlay();
+  } else {
+    textStop();
+  }
+}
+
+function actualizaOsc() {
+  osc1.freq(midiToFreq(noteOsc1.value()));
+  osc1.amp(volOsc1.value());
+  osc2.freq(midiToFreq(noteOsc1.value() + noteOsc2.value()));
+  osc2.amp(volOsc2.value());
+  lpf.freq(midiToFreq(lowFreq.value()));
+  lpf.res(resLowFreq.value());
+  hpf.freq(midiToFreq(highFreq.value()));
+  rev.drywet(drywetReverb.value());
+  del.drywet(drywetDelay.value());
+}
+
+function actualizaADSR() {
+  env.setADSR(attack.value(), decay.value(), sustain.value(), release.value());
+}
+
+function keyPressed() {
+  let k = key.toLowerCase();
+  switch(k) {
+    case "l":
+      isLog = !isLog;
+      break;
+    case "z":
+      osc1.freq(midiToFreq(noteOsc1.value()));
+      osc2.freq(midiToFreq(noteOsc1.value() + noteOsc2.value()));
+      env.play();
+      break;
+    case "s":
+      console.log();
+      osc1.freq(midiToFreq(noteOsc1.value() + 1));
+      osc2.freq(midiToFreq(noteOsc1.value() + 1 + noteOsc2.value()));
+      env.play();
+      break;
+    case "x":
+      console.log();
+      osc1.freq(midiToFreq(noteOsc1.value() + 2));
+      osc2.freq(midiToFreq(noteOsc1.value() + 2 + noteOsc2.value()));
+      env.play();
+      break;
+    case "d":
+      console.log();
+      osc1.freq(midiToFreq(noteOsc1.value() + 3));
+      osc2.freq(midiToFreq(noteOsc1.value() + 3 + noteOsc2.value()));
+      env.play();
+      break;
+    case "c":
+      osc1.freq(midiToFreq(noteOsc1.value() + 4));
+      osc2.freq(midiToFreq(noteOsc1.value() + 4 + noteOsc2.value()));
+      env.play();
+      break;
+    case "v":
+      osc1.freq(midiToFreq(noteOsc1.value() + 5));
+      osc2.freq(midiToFreq(noteOsc1.value() + 5 + noteOsc2.value()));
+      env.play();
+      break;
+    case "g":
+      console.log();
+      osc1.freq(midiToFreq(noteOsc1.value() + 6));
+      osc2.freq(midiToFreq(noteOsc1.value() + 6 + noteOsc2.value()));
+      env.play();
+      break;
+    case "b":
+      osc1.freq(midiToFreq(noteOsc1.value() + 7));
+      osc2.freq(midiToFreq(noteOsc1.value() + 7 + noteOsc2.value()));
+      env.play();
+      break;
+    case "h":
+      console.log();
+      osc1.freq(midiToFreq(noteOsc1.value() + 8));
+      osc2.freq(midiToFreq(noteOsc1.value() + 8 + noteOsc2.value()));
+      env.play();
+      break;
+    case "n":
+      osc1.freq(midiToFreq(noteOsc1.value() + 9));
+      osc2.freq(midiToFreq(noteOsc1.value() + 9 + noteOsc2.value()));
+      env.play();
+      break;
+    case "j":
+      console.log();
+      osc1.freq(midiToFreq(noteOsc1.value() + 10));
+      osc2.freq(midiToFreq(noteOsc1.value() + 10 + noteOsc2.value()));
+      env.play();
+      break;
+    case "m":
+      osc1.freq(midiToFreq(noteOsc1.value() + 11));
+      osc2.freq(midiToFreq(noteOsc1.value() + 11 + noteOsc2.value()));
+      env.play();
+      break;
+    case ",":
+      osc1.freq(midiToFreq(noteOsc1.value() + 12));
+      osc2.freq(midiToFreq(noteOsc1.value() + 12 + noteOsc2.value()));
+      env.play();
+      break;
+    case "1":
+      osc1.setType("sine");
+      break;
+    case "2":
+      osc1.setType("triangle");
+      break;
+    case "3":
+      osc1.setType("square");
+      break;
+    case "4":
+      osc1.setType("sawtooth");
+      break;
+    case "5":
+      osc2.setType("sine");
+      break;
+    case "6":
+      osc2.setType("triangle");
+      break;
+    case "7":
+      osc2.setType("square");
+      break;
+    case "8":
+      osc2.setType("sawtooth");
+      break;
+    default:
+      console.log("Presiona otra tecla...");
+      break;
+  }
+
+}
+function canvasPressed() {
+  isPlaying = !isPlaying;
+  console.log(isPlaying);
+  if(!isPlaying) {
+    osc1.stop();
+    osc2.stop();
+  } else {
+    osc1.start(); 
+    osc2.start();
+  }
+}
+function ploter() {
+  waveForm();
+  peakForm();
+}
+function peakForm() {
+  let frecs = fft.analyze();
+      for (let i = 0; i < frecs.length; i++) {
+        let c = map(i, 0, frecs.length, 0, 255);
+        freqColor.setRed(c);
+        fill(freqColor); //remove stroke(255); xc  <Z
+        // En caso de ser LOG
+        if (isLog) {
+          let a = map(Math.log(i), 0, Math.log(frecs.length), 0, width);
+          let b = map(frecs[i], 0, 255, 0, height / 3);
+          rect(a, height, width / frecs.length, -b);
+          // En caso de ser LIN
         } else {
-          // this.screen.plotFFT(this.fft);
-          this.screen.plotFFT();
+          let a = map(i, 0, frecs.length, 0, width);
+          let b = map(frecs[i], 0, 255, 0, height / 3);
+          rect(a, height, width / frecs.length, -b);
         }
-    } 
-  }
-
-  class ScreenPlotter {
-    constructor(size, pos) {
-        this.pos = pos;
-        this.size = size;
-        this.isLog = true;
-        this.textColor;
-        this.bNormalize = true;
-        this.centerClip = false;
-        this.finalPlot = p5.constructor.Vector.add(this.size, this.pos);
-        this.fft = new p5.constructor.FFT();
-    }
-  
-  texto() {
-    // Texto de informacion
-    p5.noStroke();
-    p5.fill(textColor);
-    // text(freq + '  Hz',width*2/5, 50);
-    // text(vol + ' vol', width*3/5, 50);  
-  }
-    
-  configEntrada(input) {
-    this.fft.setInput(input);
-  }  
-  // Espectro de frecuencias
-  plotFFT = () => {
-    let spectrum = this.fft.analyze(1024);
-    console.log(spectrum);
-    p5.noStroke();
-    for (let i = 0; i< spectrum.length; i++){
-    let c = p5.map(i,0, spectrum.length, 0,255)
-    p5.fill(c, 255, 255); //remove stroke(255);
-
-    if(this.isLog) {
-        let a = p5.map(p5.log(i), 0, p5.log(spectrum.length), this.pos.x, this.finalPlot.x) 
-        let b = p5.map(spectrum[i], 0, 255, 0, this.size.y)
-        p5.rect(a, this.finalPlot.y, this.size.x / spectrum.length, -b)
-        // p5.fill(textColor);
-        // p5.text('LOG',width*3/4,50);
-
-    } else {
-        let a = p5.map(i, 0, spectrum.length, this.pos.x, this.finalPlot.x);
-        let b = p5.map(spectrum[i], 0, 255, 0, this.size.y);
-        p5.rect(a, this.finalPlot.y, this.size.x / spectrum.length, -b )
-        // p5.fill(textColor);
-        // p5.text('LIN',width*3/4,50);
-        } 
-    }
-    // p5.push();
-    //     p5.strokeWeight(3);
-    //     p5.stroke(0,255,255);
-    //     p5.point(this.pos);
-    //     p5.point(this.size);
-    //     p5.pop();
-  }
-  
-  plotWave() {
-      // Forma de onda en el tiempo
-      let waveform = this.fft.analyze.call(this.window);
-      console.log(waveform);
-      p5.noFill();
-      p5.beginShape();
-      p5.stroke(100, 255, 255);
-      for (let i = 0; i < waveform.length; i++) {
-          let x = p5.map(i, 0, waveform.length, this.pos.x, this.finalPlot.x);
-          let y = p5.map( waveform[i], -1, 1, this.pos.y, this.finalPlot.y);
-          p5.vertex(x,y);
-        }
-      p5.endShape();
-    }
-    
-    plotADSR() {
-      // Forma de onda en el tiempo
-      let waveform = this.fft.waveform(32, 'float32');
-      p5.noFill();
-      p5.beginShape();
-      p5.stroke(100,255,255);
-      for (let i = 0; i < waveform.length; i++) {
-          let x = p5.map(i, 0, waveform.length, this.pos.x, this.finalPlot.x);
-          let y = p5.map( waveform[i], 1, 0, this.pos.y, this.finalPlot.y);
-          p5.vertex(x,y);
-        }
-      p5.endShape();
-    }
-
-    plotCorrelation() {
-        let corrBuff = autoCorrelate(waveform);
-        p5.beginShape();
-        p5.stroke(180,255,255);
-        for (let i = 0; i < corrBuff.length; i++) {
-          let w = p5.map(i, 0, corrBuff.length, 0, width);
-          let h = p5.map(corrBuff[i], -1, 1, height/3, 0);
-          p5.curveVertex(w, h);
-        }
-        p5.endShape();
-    }
-
-    autoCorrelate(buffer) {
-        let newBuffer = [];
-        let nSamples = buffer.length;
-      
-        let autocorrelation = [];
-      
-        // center clip removes any samples under 0.1
-        if (this.centerClip) {
-          let cutoff = 0.1;
-          for (let i = 0; i < buffer.length; i++) {
-            let val = buffer[i];
-            buffer[i] = Math.abs(val) > cutoff ? val : 0;
-          }
-        }
-      
-        for (let lag = 0; lag < nSamples; lag++){
-            let sum = 0; 
-            for (let index = 0; index < nSamples; index++){
-                let indexLagged = index+lag;
-                if (indexLagged < nSamples) {
-                    let sound1 = buffer[index];
-                    let sound2 = buffer[indexLagged];
-                    let product = sound1 * sound2;
-                    sum += product;
-                }
-            }
-            // average to a value between -1 and 1
-            newBuffer[lag] = sum/nSamples;
-        }
-      
-        if (this.bNormalize){
-            let biggestVal = 0;
-            for (let index = 0; index < nSamples; index++){
-                if (p5.abs(newBuffer[index]) > biggestVal){
-                    biggestVal = p5.abs(newBuffer[index]);
-                }
-            }
-            for (let index = 0; index < nSamples; index++){
-                newBuffer[index] /= biggestVal;
-            }
-        }
-      
-        return newBuffer;
       }
-    
-    changePlot() {
-        this.isLog =! this.isLog;
+}
+function waveForm() {
+  let waveform = fft.waveform();
+  noFill();
+  beginShape();
+  strokeWeight(2);
+  stroke(waveColor);
+  for (let i = 0; i < waveform.length; i++) {
+    let x = map(i, 0, waveform.length, 0, width);
+    let y = map(waveform[i], -1, 1, 0, (height * 2) / 3);
+    vertex(x, y);
+  }
+  endShape();
+
+  // let corrBuff = autoCorrelate(waveform);
+  // beginShape();
+  // noFill();
+  // strokeWeight(2);
+  // stroke(correlationColor);
+  // for (let i = 0; i < corrBuff.length; i++) {
+  //   let w = map(i, 0, corrBuff.length, 0, width);
+  //   let h = map(corrBuff[i], 1, -1, 0, (height * 1) / 4);
+  //   curveVertex(w, h);
+  // }
+  // endShape();
+}
+function textPlay() {
+  push();
+  noStroke();
+  fill(textColor);
+  textSize(12);
+  textAlign(CENTER);
+  let vol = volOsc1.value(); 
+  let nota = noteOsc1.value();
+  let vol2 = volOsc2.value(); 
+  let semitone =  noteOsc1.value() + noteOsc2.value();
+  let f1 = midiToFreq(highFreq.value()).toFixed(2); 
+  let f2 = midiToFreq(lowFreq.value()).toFixed(2);
+  let r2 = resLowFreq.value().toFixed(2);
+  let a = attack.value().toFixed(2); 
+  let d = decay.value().toFixed(2);
+  let s = sustain.value().toFixed(2);
+  let r = release.value().toFixed(2);
+  let rev = drywetReverb.value();
+  let dela = drywetDelay.value();
+
+  text("Type 1: " + osc1.getType(),width/5, 60);
+  text("Volumen: " + vol,width/5, 100);
+  text("Nota: " + nota,width/5, 80);
+
+  text("Type 2: " + osc2.getType(),width*3/5, 60);
+  text("Vol2: " + vol2,width*3/5, 100);
+  text("Nota: " + semitone,width*3/5, 80);
+
+  text("High: " + f1,width/5, 140);
+  text("Low: "+ f2,width/5, 160);
+  text("Res: " + r2,width/5, 180);
+  
+  text("Reverb: " + rev,width*1/5, 220);
+  text("Delay: " + dela,width*3/5, 220);
+  text("A: " + a,width*1/5, 260);
+  text("D: " + d,width*2/5, 260);
+  text("S: " + s,width*3/5, 260);
+  text("R: " + r,width*4/5, 260);
+  if(isLog) text("LOG", (width * 3) / 5, 140);
+  else text("LIN", (width * 3) / 5, 140);
+  pop();
+}
+function textStop() {
+  push();
+  noStroke();
+  fill(textColor);
+  textSize(24);
+  textAlign(CENTER);
+  text("Presiona el canvas",width/2,height/2);
+  pop();
+}
+function autoCorrelate(buffer) {
+  var newBuffer = [];
+  var nSamples = buffer.length;
+  // center clip removes any samples under 0.1
+  if (centerClip) {
+    var cutoff = 0.1;
+    for (var i = 0; i < buffer.length; i++) {
+      var val = buffer[i];
+      buffer[i] = Math.abs(val) > cutoff ? val : 0;
     }
   }
-};
-export default sketch;
+  for (let lag = 0; lag < nSamples; lag++) {
+    let sum = 0;
+    for (let index = 0; index < nSamples; index++) {
+      let indexLagged = index + lag;
+      if (indexLagged < nSamples) {
+        let sound1 = buffer[index];
+        let sound2 = buffer[indexLagged];
+        let product = sound1 * sound2;
+        sum += product;
+      }
+    }
+    // average to a value between -1 and 1
+    newBuffer[lag] = sum / nSamples;
+  }
+  if (bNormalize) {
+    let biggestVal = 0;
+    for (let index = 0; index < nSamples; index++) {
+      if (abs(newBuffer[index]) > biggestVal) {
+        biggestVal = abs(newBuffer[index]);
+      }
+    }
+    for (let index = 0; index < nSamples; index++) {
+      newBuffer[index] /= biggestVal;
+    }
+  }
+  return newBuffer;
+}
+function setGradient(x, y, w, h, c1, c2, axis) {
+  push();
+  noFill();
+  switch(axis) {
+    case "Y_AXIS":
+      for (let i = y; i <= y + h; i++) {
+        let inter = map(i, y, y + h, 0, 1);
+        let c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(x, i, x + w, i);
+      }
+      break;
+    case "Y_AXIS_INVERSE":
+      for (let i = x; i <= x + w; i++) {
+        let inter = map(i, y, y + h, 0, 1);
+        let c = lerpColor(c2, c1, inter);
+        stroke(c);
+        line(x, i, x + w , i);
+      }
+      break;
+    case "X_AXIS":
+      for (let i = x; i <= x + w; i++) {
+        let inter = map(i, x, x + w, 0, 1);
+        let c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(i, y, i, y + h);
+      }
+      break;
+    case "X_AXIS_INVERSE":
+      for (let i = x; i <= x + w; i++) {
+        let inter = map(i, x, x + w, 0, 1);
+        let c = lerpColor(c2, c1, inter);
+        stroke(c);
+        line(i, y, i, y + h);
+      }
+      break;
+    default:
+      console.log("Caso no valido");
+      break;
+  }
+  pop();
+
+}

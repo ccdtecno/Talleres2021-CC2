@@ -99,7 +99,12 @@ The above copyright notice and this permission notice shall be included in all c
               <h4 class="card-title pl-3 pb-1">Sintetizador Digital</h4>
               <!-- <p class="category">Título del sketch</p> -->
             </div>
-            <div id="sketch-container" class="card-body">
+            <div class="card-body">
+              <div id="sketch-container"></div>
+              <div id="sketch-info" class="bg-warning"><h6>OSC:</h6></div>
+              <div id="sketch-info-2" class="bg-warning"><h6>FILTER:</h6></div>
+              <div id="sketch-info-3" class="bg-warning"><h6>FX:</h6></div>
+              <div id="sketch-info-4" class="bg-warning"><h6>ADSR:</h6></div>
             </div>
           </div>
         </div>
@@ -144,19 +149,19 @@ The above copyright notice and this permission notice shall be included in all c
             <!-- TEXTO -->
             <div class="tab-content tab-space">
               <div class="tab-pane active" id="instrucciones-1">
+                <h6>Toca el sinte con:</h6>
+                <p> ---- [ s ] -- [ d ] ------------ [ g ] -- [ h ] -- [ j ]</p>
+                <p>[ z ] -- [ x ] -- [ c ] -- [ v ] -- [ b ] -- [ n ] -- [ m ] -- [ ; ]</p>
                 <br>
-                <p>Un sintetizador</p>
-                <br>
-                <h6>Interactua con:</h6>
-                <small>1 : Senoidal</small><br>
-                <small>2 : Triangular</small><br>
-                <small>3 : Cuadrada</small><br>
-                <small>4 : Diente de Sierra</small><br>
-                <small>a : Start OSC</small><br>
-                <small>s : Stop OSC</small><br>
-                <small>l : Tipo de escala < log / lin ></small>
+                <h6>Cambia los parametros con:</h6>
+                <small>[ 1 ] Sin 1 [ 2 ] Tri 1 [ 3 ] Sqr 1 [ 4 ] Saw 1</small><br>
+                <small>[ 5 ] Sin 2 [ 6 ] Tri 2 [ 7 ] Sqr 2 [ 8 ] Saw 2</small><br>
+                <small>[ l ] Escala < log / lin ></small>
               </div>
               <div class="tab-pane" id="informacion-1">
+                <br>
+                <p>Un sintetizador monofónico es un tipo de sintetizador que solo puede ser ejecutado una sola nota a la vez, por lo que es ideal para tocar melodías</p>
+                <br>
                 <h4>Autor:</h4>
                 <p>ccdtecno</p>
                 <br>
@@ -233,7 +238,7 @@ The above copyright notice and this permission notice shall be included in all c
   <script src="../assets/js/material-kit.js?v=2.0.7" type="text/javascript"></script>
   <script src="../assets/js/plugins/p5/p5.js" type="text/javascript"></script>
   <script src="../assets/js/plugins/p5/addons/p5.sound.js" type="text/javascript"></script>
-  <script src="../assets/js/scripts/CC2/audioGraf.js"></script>
+  <script src="../assets/js/scripts/CC2/synth.js"></script>
   <script>
 
 

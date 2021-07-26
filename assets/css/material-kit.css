@@ -2331,6 +2331,21 @@ ion-icon.footer-icon {
   /* text-align: center; */
 }
 
+#sketch-info, #sketch-info-2, #sketch-info-3, #sketch-info-4 {
+  display: flex;
+  justify-content: space-evenly;
+  /* padding-top: 0.75rem; */
+}
+
+#sketch-info {
+  padding-top: 0.75rem;
+  border-radius: 16px 16px 0 0;
+}
+#sketch-info-4 {
+  padding-bottom: 0.75rem;
+  border-radius: 0 0 16px 16px;
+}
+
 .table-responsive {
   display: block;
   width: 100%;
